@@ -1,0 +1,8 @@
+# IDE files
+.idea/
+
+# package directories
+node_modules
+
+# TypeScript build info
+*.tsbuildinfo

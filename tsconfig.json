@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": [
+      "esnext"
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es5",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "build",
+    "rootDir": "src",
+    "allowJs": true,
+    "checkJs": false,
+    "composite": true,
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+
+      "@admin/*": [
+        "src/admin/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@db/*": [
+        "src/connections/gen2_db/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.cjs",
+    "**/*.js",
+    "coverage"
+  ]
+}
