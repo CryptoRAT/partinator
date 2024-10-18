@@ -12,6 +12,7 @@
     "start": "yarn run build && npx tsx src/app.ts",
     "dev": "export NODE_ENV=local && yarn run build && npx tsx watch src/app.ts",
     "test": "export NODE_ENV=test && jest --no-cache --detectOpenHandles",
+    "test:dev": "yarn run clean && yarn run build && yarn run test",
     "test:prepush": "yarn run fullclean && yarn install && yarn run build && yarn run test",
     "test:services": "export NODE_ENV=test && yarn build && export TEST_TYPE=services && jest",
     "lint": "eslint . --ext .ts"
