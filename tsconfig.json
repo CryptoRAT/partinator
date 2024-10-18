@@ -7,7 +7,7 @@
     ],
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "es6",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "build",
@@ -22,15 +22,23 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-
+      "@db/*": [
+        "src/datasources/*"
+      ],
       "@admin/*": [
         "src/admin/*"
       ],
       "@utils/*": [
         "src/utils/*"
       ],
-      "@db/*": [
-        "src/connections/gen2_db/*"
+      "@models/*": [
+        "src/models/*"
+      ],
+      "@loggers/*": [
+        "src/loggers/*"
+      ],
+      "@controllers/*": [
+        "src/controllers/*"
       ]
     }
   },
