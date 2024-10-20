@@ -1,6 +1,6 @@
 import sequelize, {getLogging} from '../memory';
 import { Sequelize } from 'sequelize';
-import {sequelizeLogger} from "@loggers/loggers.ts";
+import {sequelizeLogger} from "@loggers/loggers";
 
 describe('Memory Datasource', () => {
     it('should be an instance of Sequelize', () => {
