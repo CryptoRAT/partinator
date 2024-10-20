@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
-import { getProducts } from '../controllers/productController';
-import { productsLogger } from '../loggers/loggers';
+import { getProducts } from '@controllers/productController';
+import { productsLogger } from '@loggers/loggers';
 import { query, validationResult } from 'express-validator';
 
 const router = express.Router();

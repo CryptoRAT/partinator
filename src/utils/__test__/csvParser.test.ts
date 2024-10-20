@@ -2,9 +2,10 @@ import { parseCSV } from '../csvParser';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+
 describe('CSV Parser Utility', () => {
     it('should correctly parse and standardize a CSV file from Seller A', async () => {
-        const csvPath = path.join(__dirname, '../__test__/seller-a-basic-data.csv');
+        const csvPath = path.resolve(__dirname, '../__test__/seller-a-basic-data.csv');
         const csvContent = await fs.readFile(csvPath, 'utf-8');
 
         const result = parseCSV(csvContent);
@@ -21,7 +22,7 @@ describe('CSV Parser Utility', () => {
     });
 
     it('should correctly parse and standardize a CSV file from Seller B', async () => {
-        const csvPath = path.join(__dirname, '../__test__/seller-b-basic-data.csv');
+        const csvPath = path.resolve(__dirname, '../__test__/seller-b-basic-data.csv');
         const csvContent = await fs.readFile(csvPath, 'utf-8');
 
         const result = parseCSV(csvContent);

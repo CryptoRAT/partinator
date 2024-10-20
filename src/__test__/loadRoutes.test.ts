@@ -16,14 +16,14 @@ describe('loadRoutes', () => {
         console.warn = originalWarn;
     });
 
-    it('should warn if a route file has an invalid default export', () => {
+    it('should warn if a route file has an invalid default export', async () => {
         // Mocking readdirSync to simulate route files
         (fs.readdirSync as jest.Mock).mockReturnValue(['invalidRoute.ts']);
 
         // Correct basePath to point to the actual mocked directory structure
         const basePath = path.join(__dirname, 'mock/basePath');
 
-        loadRoutes(basePath);
+        await loadRoutes(basePath);
 
         expect(console.warn).toHaveBeenCalledWith(
             'Could not load route from file invalidRoute.ts -- Invalid default export'

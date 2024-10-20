@@ -1,21 +1,20 @@
 import express from 'express';
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 
-
-const loadRoutes = (basePath: string): express.Router => {
+const loadRoutes = async (basePath: string): Promise<express.Router> => {
     const router = express.Router();
 
     // Get all route files
-    const files = fs.readdirSync(basePath);
+    const files = await fs.readdir(basePath);
 
-    // Import routes from each file synchronously using require
-    files.forEach(file => {
+    // Import routes from each file
+    for (const file of files) {
         // Exclude files with '__test__' in their names
         if (!file.includes('__test__')) {
             const filePath = path.join(basePath, file);
             try {
-                const route = require(filePath);
+                const route = await import(filePath);
                 // Check if the default export is a valid middleware function
                 if (route.default && typeof route.default === 'function') {
                     router.use(route.default);
@@ -26,7 +25,7 @@ const loadRoutes = (basePath: string): express.Router => {
                 console.error(`Failed to load route from file ${file}:`, err);
             }
         }
-    });
+    }
 
     return router;
 };

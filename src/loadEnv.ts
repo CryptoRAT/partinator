@@ -1,9 +1,5 @@
 import { config } from 'dotenv';
 import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 export function getEnvFile(): string {
     return process.env.NODE_ENV
@@ -11,5 +7,6 @@ export function getEnvFile(): string {
         : '.env.development';
 }
 
+// Load environment variables from the appropriate file
 const envFile = getEnvFile();
 config({ path: path.resolve(__dirname, '../config', envFile) });
