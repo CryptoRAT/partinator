@@ -1,12 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '@db/memory';
 
-class Product extends Model {
-    // timestamps
-    readonly createdAt!: Date;
-    readonly updatedAt!: Date;
-    readonly deletedAt?: Date;
-}
+class Product extends Model { }
 
 Product.init(
     {
