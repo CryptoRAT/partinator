@@ -12,3 +12,9 @@ coverage/
 
 # logs
 logs/
+
+# build output
+build/
+
+# Intermediate build files
+*/**/*.d.ts

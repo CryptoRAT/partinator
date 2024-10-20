@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../../app';
 import Product from '@models/product';
 import sequelize from '@db/memory';
-import { productsLogger } from '../../loggers/loggers';
+import { productsLogger } from '@loggers/loggers';
 
 // Global logger mock setup
 let originalError: typeof productsLogger.error;

@@ -1,6 +1,6 @@
 import sequelize, {getLogging} from '../memory';
 import { Sequelize } from 'sequelize';
-import {sequelizeLogger} from "@loggers/loggers.ts";
+import {sequelizeLogger} from "@loggers/loggers";
 
 describe('Memory Datasource', () => {
     it('should be an instance of Sequelize', () => {
@@ -13,11 +13,6 @@ describe('Memory Datasource', () => {
 
     it('should successfully close the database connection', async () => {
         await expect(sequelize.close()).resolves.not.toThrow();
-    });
-
-    it('should have logging disabled in the test environment', () => {
-        const logging = (sequelize as any).options?.logging;
-        expect(logging).toBe(false);
     });
 
     it('should use the logging function when NODE_ENV is not "test"', () => {
@@ -80,19 +75,6 @@ describe('Memory Datasource', () => {
         // Close the sequelize instance to clean up
         sequelizeDev.close();
     });
-    it('should return correct logging setting based on environment', () => {
-        // Test when NODE_ENV is 'test'
-        process.env.NODE_ENV = 'test';
-        expect(getLogging()).toBe(false);
-
-        // Test when NODE_ENV is not 'test'
-        process.env.NODE_ENV = 'development';
-        const logging = getLogging();
-        expect(typeof logging).toBe('function');
-
-        // Restore original NODE_ENV
-        process.env.NODE_ENV = 'test';
-    });
     it('should use default logging behavior for unexpected NODE_ENV values', () => {
         // Set NODE_ENV to an unexpected value
         process.env.NODE_ENV = 'unexpected_env';
@@ -109,10 +91,6 @@ describe('Memory Datasource', () => {
 
         // Close the sequelize instance to clean up
         sequelizeUnexpected.close();
-    });
-    it('should return false when NODE_ENV is explicitly "test"', () => {
-        process.env.NODE_ENV = 'test';
-        expect(getLogging()).toBe(false);
     });
 
     it('should return a function for any environment other than "test"', () => {

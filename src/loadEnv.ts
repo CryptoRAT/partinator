@@ -7,5 +7,6 @@ export function getEnvFile(): string {
         : '.env.development';
 }
 
+// Load environment variables from the appropriate file
 const envFile = getEnvFile();
 config({ path: path.resolve(__dirname, '../config', envFile) });

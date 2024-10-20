@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import multer from 'multer';
-import { parseCSV } from '../utils/csvParser';
+import { parseCSV } from '@utils/csvParser';
 
 const router = express.Router();
 const upload = multer(); // TODO: research best middleware to handle file uploads

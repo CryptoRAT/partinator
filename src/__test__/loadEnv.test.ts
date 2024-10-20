@@ -1,4 +1,3 @@
-// __test__/loadEnv.test.ts
 import { getEnvFile } from '../loadEnv';
 
 describe('Load Environment', () => {

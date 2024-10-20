@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": [
-      "esnext"
-    ],
-    "module": "esnext",
+    "lib": ["esnext"],
+    "module": "commonjs",
     "moduleResolution": "node",
     "target": "es6",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "build",
-    "rootDir": "src",
+    "rootDir": ".",
     "allowJs": true,
     "checkJs": false,
     "composite": true,
@@ -22,33 +21,15 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@db/*": [
-        "src/datasources/*"
-      ],
-      "@admin/*": [
-        "src/admin/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
-      "@models/*": [
-        "src/models/*"
-      ],
-      "@loggers/*": [
-        "src/loggers/*"
-      ],
-      "@controllers/*": [
-        "src/controllers/*"
-      ]
+      "@config/*": ["config/*"],
+      "@db/*": ["src/datasources/*"],
+      "@admin/*": ["src/admin/*"],
+      "@utils/*": ["src/utils/*"],
+      "@models/*": ["src/models/*"],
+      "@loggers/*": ["src/loggers/*"],
+      "@controllers/*": ["src/controllers/*"]
     }
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.cjs",
-    "**/*.js",
-    "coverage"
-  ]
+  "include": ["src/**/*", "config/**/*"],
+  "exclude": ["node_modules", "**/*.cjs", "**/*.js", "coverage"]
 }

@@ -1,10 +1,81 @@
 import express, { Request, Response } from 'express';
-import { getProducts } from '../controllers/productController';
-import { productsLogger } from '../loggers/loggers';
+import { getProducts } from '@controllers/productController';
+import { productsLogger } from '@loggers/loggers';
 import { query, validationResult } from 'express-validator';
 
 const router = express.Router();
 
+
+/**
+ * @swagger
+ * /api/products:
+ *   get:
+ *     summary: Retrieve a list of products
+ *     description: Retrieve a list of products with optional filters.
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: Page number for pagination
+ *       - in: query
+ *         name: pageSize
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: Number of products per page
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Filter by category
+ *       - in: query
+ *         name: material
+ *         schema:
+ *           type: string
+ *         description: Filter by material
+ *       - in: query
+ *         name: threadSize
+ *         schema:
+ *           type: string
+ *         description: Filter by thread size
+ *       - in: query
+ *         name: finish
+ *         schema:
+ *           type: string
+ *         description: Filter by finish
+ *     responses:
+ *       200:
+ *         description: A list of products.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *                   category:
+ *                     type: string
+ *                   material:
+ *                     type: string
+ *                   threadSize:
+ *                     type: string
+ *                   finish:
+ *                     type: string
+ *                   quantity:
+ *                     type: integer
+ *                   price:
+ *                     type: number
+ *       400:
+ *         description: Invalid request parameters
+ *       500:
+ *         description: Internal server error
+ */
 router.get(
     '/api/products',
     [
