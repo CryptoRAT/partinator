@@ -12,3 +12,6 @@ coverage/
 
 # logs
 logs/
+
+# build output
+build/

@@ -5,6 +5,8 @@ This project is a backend system for a simplified e-commerce platform focused on
 
 The project will follow Test-Driven Development (TDD) and a feature-by-feature approach, where both the data layer and API layer for each feature are developed together. The core requirements will be prioritized, with bonus features added if time permits.
 
+## Assumptions
+- **Project Type:** Writing this for a microservice, not as far as to dockerize, but think of that when making design decisions.
 ## Development Approach
 - **Test-Driven Development (TDD):** Write tests before implementing functionality using Jest for unit tests.
 - **Feature Development:** Implement each feature fully before moving to the next, including the data and API layers.

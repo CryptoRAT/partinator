@@ -2,53 +2,33 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": [
-      "esnext"
-    ],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "target": "es6",
+    "lib": ["ESNext"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "target": "ESNext",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "build",
-    "rootDir": "src",
+    "rootDir": ".",
     "allowJs": true,
     "checkJs": false,
     "composite": true,
     "emitDeclarationOnly": true,
-    "allowImportingTsExtensions": true,
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@db/*": [
-        "src/datasources/*"
-      ],
-      "@admin/*": [
-        "src/admin/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
-      "@models/*": [
-        "src/models/*"
-      ],
-      "@loggers/*": [
-        "src/loggers/*"
-      ],
-      "@controllers/*": [
-        "src/controllers/*"
-      ]
-    }
+      "@config/*": ["config/*"],
+      "@db/*": ["src/datasources/*"],
+      "@admin/*": ["src/admin/*"],
+      "@utils/*": ["src/utils/*"],
+      "@models/*": ["src/models/*"],
+      "@loggers/*": ["src/loggers/*"],
+      "@controllers/*": ["src/controllers/*"]
+    },
+    "resolveJsonModule": true
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.cjs",
-    "**/*.js",
-    "coverage"
-  ]
+  "include": ["src/**/*", "config/**/*"],
+  "exclude": ["node_modules", "**/*.cjs", "**/*.js", "coverage"]
 }

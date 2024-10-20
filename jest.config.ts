@@ -1,12 +1,12 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-    preset: 'ts-jest',
+    preset: 'ts-jest/presets/default-esm', // Use ESM preset
     testEnvironment: 'node',
-    moduleFileExtensions: ['ts','js'],
+    moduleFileExtensions: ['ts', 'js'],
     testMatch: ['**/__test__/**/*.test.ts'],
     transform: {
-        '^.+\\.ts$': 'ts-jest',
+        '^.+\\.ts$': ['ts-jest', { useESM: true }],
     },
     collectCoverage: true,
     coverageThreshold: {
@@ -24,7 +24,9 @@ const config: Config = {
         '^@models/(.*)$': '<rootDir>/src/models/$1',
         '^@controllers/(.*)$': '<rootDir>/src/controllers/$1',
         '^@loggers/(.*)$': '<rootDir>/src/loggers/$1',
+        '^@config/(.*)$': '<rootDir>/config/$1',
     },
+    extensionsToTreatAsEsm: ['.ts'],
 };
 
 export default config;
