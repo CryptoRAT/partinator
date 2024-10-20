@@ -39,25 +39,25 @@ describe('Product Controller', () => {
     it('should fetch products filtered by category', async () => {
         const products = await getProducts({ category: 'Fastener' }, 1, 10);
         expect(products.length).toBeGreaterThan(0);
-        expect(products[0].category).toBe('Fastener');
+        expect(products[0].getDataValue('category')).toBe('Fastener');
     });
 
     it('should fetch products filtered by material', async () => {
         const products = await getProducts({ material: 'Steel' }, 1, 10);
         expect(products.length).toBeGreaterThan(0);
-        expect(products[0].material).toBe('Steel');
+        expect(products[0].getDataValue('material')).toBe('Steel');
     });
 
     it('should fetch products filtered by thread size', async () => {
         const products = await getProducts({ threadSize: 'M10-1.5' }, 1, 10);
         expect(products.length).toBeGreaterThan(0);
-        expect(products[0].threadSize).toBe('M10-1.5');
+        expect(products[0].getDataValue('threadSize')).toBe('M10-1.5');
     });
 
     it('should fetch products filtered by finish', async () => {
         const products = await getProducts({ finish: 'Plain' }, 1, 10);
         expect(products.length).toBeGreaterThan(0);
-        expect(products[0].finish).toBe('Plain');
+        expect(products[0].getDataValue('finish')).toBe('Plain');
     });
 
     it('should return an empty list if no products match the filters', async () => {
@@ -71,7 +71,7 @@ describe('Product Controller', () => {
 
         const productsPage2 = await getProducts({}, 2, 1);
         expect(productsPage2.length).toBe(1);
-        expect(productsPage1[0].id).not.toBe(productsPage2[0].id);
+        expect(productsPage1[0].getDataValue('id')).not.toBe(productsPage2[0].getDataValue('id'));
     });
 
     it('should throw an error when there is an internal server error', async () => {
