@@ -1,32 +1,11 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import sequelize from '@db/memory';
 
-interface ProductAttributes {
-    id: number;
-    name: string;
-    category: string;
-    material: string;
-    threadSize: string;
-    finish: string;
-    quantity: number;
-    price: number;
-}
-
-interface ProductCreationAttributes extends Optional<ProductAttributes, 'id'> {}
-
-class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
-    public id!: number;
-    public name!: string;
-    public category!: string;
-    public material!: string;
-    public threadSize!: string;
-    public finish!: string;
-    public quantity!: number;
-    public price!: number;
-
-    // timestamps!
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+class Product extends Model {
+    // timestamps
+    readonly createdAt!: Date;
+    readonly updatedAt!: Date;
+    readonly deletedAt?: Date;
 }
 
 Product.init(
@@ -51,6 +30,7 @@ Product.init(
         threadSize: {
             type: DataTypes.STRING,
             allowNull: false,
+            field: 'thread_size',
         },
         finish: {
             type: DataTypes.STRING,
@@ -64,12 +44,19 @@ Product.init(
             type: DataTypes.FLOAT,
             allowNull: false,
         },
+        deletedAt: {
+            type: DataTypes.DATE,
+            allowNull: true,
+            field: 'deleted_at',
+        },
     },
     {
         sequelize,
         modelName: 'Product',
         tableName: 'products',
         timestamps: true,
+        underscored: true,
+        paranoid: true, // Enable soft deletes with Sequelize's `deletedAt` field
     }
 );
 

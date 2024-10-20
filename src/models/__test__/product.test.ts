@@ -21,8 +21,8 @@ describe('Product Model', () => {
             price: 0.75,
         });
 
-        expect(product.id).toBeDefined();
-        expect(product.name).toBe('Hex Cap Screw');
+        expect(product.getDataValue('id')).toBeDefined();
+        expect(product.getDataValue('name')).toBe('Hex Cap Screw');
     });
 
     it('should read a product by primary key', async () => {
@@ -36,9 +36,9 @@ describe('Product Model', () => {
             price: 0.5,
         });
 
-        const product = await Product.findByPk(createdProduct.id);
+        const product = await Product.findByPk(createdProduct.getDataValue('id'));
         expect(product).not.toBeNull();
-        expect(product?.name).toBe('Wood Screw');
+        expect(product?.getDataValue('name')).toBe('Wood Screw');
     });
 
     it('should update a product', async () => {
@@ -57,11 +57,13 @@ describe('Product Model', () => {
             price: 1.25,
         });
 
-        expect(product.quantity).toBe(300);
-        expect(product.price).toBe(1.25);
+        // Query the database again to verify the changes
+        const updatedProduct = await Product.findByPk(product.getDataValue('id'));
+        expect(updatedProduct?.getDataValue('quantity')).toBe(300);
+        expect(updatedProduct?.getDataValue('price')).toBe(1.25);
     });
 
-    it('should delete a product', async () => {
+    it('should soft delete a product', async () => {
         const product = await Product.create({
             name: 'Nail',
             category: 'Fastener',
@@ -72,14 +74,19 @@ describe('Product Model', () => {
             price: 0.05,
         });
 
-        const productId = product.id;
+        const productId = product.getDataValue('id');
         await product.destroy();
 
-        const deletedProduct = await Product.findByPk(productId);
-        expect(deletedProduct).toBeNull();
+        const deletedProduct = await Product.findByPk(productId, { paranoid: false });
+        expect(deletedProduct).not.toBeNull();
+        expect(deletedProduct?.getDataValue('deletedAt')).toBeDefined();
+
+        // Verify that the product is not returned in a standard findAll query
+        const products = await Product.findAll();
+        expect(products.find(p => p.getDataValue('id') === productId)).toBeUndefined();
     });
 
-    it('should find all products', async () => {
+    it('should find all products excluding soft deleted', async () => {
         await Product.create({
             name: 'Anchor Bolt',
             category: 'Fastener',
@@ -100,7 +107,30 @@ describe('Product Model', () => {
             price: 0.25,
         });
 
+        // Soft delete a product
+        const productToDelete = await Product.create({
+            name: 'Washer',
+            category: 'Fastener',
+            material: 'Steel',
+            threadSize: 'M6',
+            finish: 'Plain',
+            quantity: 300,
+            price: 0.1,
+        });
+        await productToDelete.destroy();
+
+        // Find all products excluding soft deleted
         const products = await Product.findAll();
         expect(products.length).toBeGreaterThanOrEqual(2);
+        expect(products.find(p => p.getDataValue('name') === 'Washer')).toBeFalsy();
+    });
+
+    it('should find all products including soft deleted when paranoid is false', async () => {
+        // Find all products including soft deleted
+        const allProducts = await Product.findAll({ paranoid: false });
+        expect(allProducts.length).toBeGreaterThanOrEqual(3);
+        const softDeletedProduct = allProducts.find(p => p.getDataValue('name') === 'Washer');
+        expect(softDeletedProduct).not.toBeNull();
+        expect(softDeletedProduct?.getDataValue('deletedAt')).not.toBeNull();
     });
 });
