@@ -1,5 +1,5 @@
 import app from './app';
-import {isMainModule} from "@utils/instanceUtils.ts";
+import {isMainModule} from "@utils/instanceUtils";
 
 const PORT = process.env.PORT || 3000;
 
