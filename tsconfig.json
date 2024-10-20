@@ -3,8 +3,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "lib": ["ESNext"],
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "esnext",  // Keeps the flexibility of ES module
+    "moduleResolution": "node",  // Allows using paths without file extensions
     "target": "ESNext",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
