@@ -44,8 +44,23 @@ const inventoryLogger = winston.createLogger({
         }),
     ],
 })
+
+const orderLogger = winston.createLogger({
+    level: process.env.LOG_LEVEL || 'info',
+    format: logFormat,
+    transports: [
+        new DailyRotateFile({
+            filename: 'order-%DATE%.log',
+            dirname: './logs',
+            datePattern: 'YYYY-MM-DD',
+            maxFiles: '7d',
+        }),
+    ],
+})
+
 export {
     sequelizeLogger,
     productsLogger,
     inventoryLogger,
+    orderLogger,
 }
