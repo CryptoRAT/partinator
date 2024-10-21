@@ -26,7 +26,6 @@ describe('ProductModel Model', () => {
         expect(product.getDataValue('name')).toBe('Hex Cap Screw');
         expect(product.getDataValue('inventory')).toBe(50);
     });
-    });
 
     it('should read a product by primary key', async () => {
         const createdProduct = await ProductModel.create({
@@ -84,7 +83,7 @@ describe('ProductModel Model', () => {
         const productId = product.getDataValue('id');
         await product.destroy();
 
-        const deletedProduct = await ProductModel.findByPk(productId, { paranoid: false });
+        const deletedProduct = await ProductModel.findByPk(productId, {paranoid: false});
         expect(deletedProduct).not.toBeNull();
         expect(deletedProduct?.getDataValue('deletedAt')).toBeDefined();
 
@@ -134,12 +133,10 @@ describe('ProductModel Model', () => {
 
     it('should find all products including soft deleted when paranoid is false', async () => {
         // Find all products including soft deleted
-        const allProducts = await ProductModel.findAll({ paranoid: false });
+        const allProducts = await ProductModel.findAll({paranoid: false});
         expect(allProducts.length).toBeGreaterThanOrEqual(3);
         const softDeletedProduct = allProducts.find(p => p.getDataValue('name') === 'Washer');
         expect(softDeletedProduct).not.toBeNull();
         expect(softDeletedProduct?.getDataValue('deletedAt')).not.toBeNull();
     });
 });
-
-

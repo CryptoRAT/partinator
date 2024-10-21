@@ -13,6 +13,7 @@ beforeAll(async () => {
             finish: 'Plain',
             quantity: 100,
             price: 0.75,
+            inventory: 25,
         },
         {
             name: 'Wood Screw',
@@ -22,6 +23,7 @@ beforeAll(async () => {
             finish: 'Polished',
             quantity: 200,
             price: 0.5,
+            inventory: 25,
         },
     ]);
 });

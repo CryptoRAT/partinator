@@ -1,4 +1,4 @@
-import ProductModel from '@models/productModel.ts';
+import ProductModel from '@models/productModel';
 
 export const getProducts = async (filters: any, page: number, pageSize: number) => {
     const offset = (page - 1) * pageSize;
