@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../../app';
-import Product from '@models/product';
+import ProductModel from '@models/productModel.ts';
 import sequelize from '@db/memory';
 import { productsLogger } from '@loggers/loggers';
 
@@ -14,7 +14,7 @@ beforeAll(async () => {
     originalInfo = productsLogger.info;
     productsLogger.info = jest.fn();
     await sequelize.sync({ force: true }); // Ensure the database is properly synced
-    await Product.bulkCreate([
+    await ProductModel.bulkCreate([
         {
             name: 'Hex Cap Screw',
             category: 'Fastener',
@@ -47,7 +47,7 @@ afterAll(async () => {
 describe('GET /api/products', () => {
 
     it('should handle internal server errors gracefully', async () => {
-        jest.spyOn(Product, 'findAll').mockImplementation(() => {
+        jest.spyOn(ProductModel, 'findAll').mockImplementation(() => {
             throw new Error('Database error');
         });
 
@@ -59,7 +59,7 @@ describe('GET /api/products', () => {
             error: expect.any(Error)
         });
 
-        (Product.findAll as jest.Mock).mockRestore();
+        (ProductModel.findAll as jest.Mock).mockRestore();
     });
 
     it('should return a 400 error if page is not a positive integer', async () => {
@@ -178,4 +178,59 @@ describe('GET /api/products - Filter Application Tests', () => {
     });
 });
 
+
+// Inventory Management Tests
+describe('Inventory Management', () => {
+    let productId: number;
+
+    beforeAll(async () => {
+        // Create a product to work with inventory
+        const product = await ProductModel.create({
+            name: 'Hex Cap Screw',
+            category: 'Fasteners',
+            price: 0.75,
+            inventory: 100,
+        });
+        productId = product.id;
+    });
+
+    describe('PUT /inventory/:id', () => {
+        it('should update inventory level successfully', async () => {
+            const response = await request(app)
+                .put(`/inventory/${productId}`)
+                .send({ quantity: 50 });
+
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe('Inventory updated successfully');
+
+            const updatedProduct = await ProductModel.findByPk(productId);
+            expect(updatedProduct?.inventory).toBe(150);
+        });
+
+        it('should return an error when updating inventory with invalid data', async () => {
+            const response = await request(app)
+                .put(`/inventory/${productId}`)
+                .send({ quantity: -200 });
+
+            expect(response.status).toBe(400);
+            expect(response.body.error).toBe('Invalid inventory update request');
+        });
+    });
+
+    describe('GET /inventory/:id', () => {
+        it('should return the correct inventory level for a product', async () => {
+            const response = await request(app).get(`/inventory/${productId}`);
+
+            expect(response.status).toBe(200);
+            expect(response.body.inventory).toBe(150);
+        });
+
+        it('should return an error if the product does not exist', async () => {
+            const response = await request(app).get('/inventory/9999');
+
+            expect(response.status).toBe(404);
+            expect(response.body.error).toBe('ProductModel not found');
+        });
+    });
+});
 

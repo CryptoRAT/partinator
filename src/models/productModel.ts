@@ -1,9 +1,9 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '@db/memory';
 
-class Product extends Model { }
+class ProductModel extends Model { }
 
-Product.init(
+ProductModel.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -47,7 +47,7 @@ Product.init(
     },
     {
         sequelize,
-        modelName: 'Product',
+        modelName: 'ProductModel',
         tableName: 'products',
         timestamps: true,
         underscored: true,
@@ -55,4 +55,4 @@ Product.init(
     }
 );
 
-export default Product;
+export default ProductModel;

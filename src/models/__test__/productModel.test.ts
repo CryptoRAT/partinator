@@ -1,4 +1,4 @@
-import Product from '@models/product';
+import ProductModel from '@models/productModel.ts';
 import sequelize from '@db/memory';
 
 beforeAll(async () => {
@@ -9,9 +9,9 @@ afterAll(async () => {
     await sequelize.close();
 });
 
-describe('Product Model', () => {
+describe('ProductModel Model', () => {
     it('should create a product', async () => {
-        const product = await Product.create({
+        const product = await ProductModel.create({
             name: 'Hex Cap Screw',
             category: 'Fastener',
             material: 'Steel',
@@ -19,14 +19,17 @@ describe('Product Model', () => {
             finish: 'Plain',
             quantity: 100,
             price: 0.75,
+            inventory: 50,
         });
 
         expect(product.getDataValue('id')).toBeDefined();
         expect(product.getDataValue('name')).toBe('Hex Cap Screw');
+        expect(product.getDataValue('inventory')).toBe(50);
+    });
     });
 
     it('should read a product by primary key', async () => {
-        const createdProduct = await Product.create({
+        const createdProduct = await ProductModel.create({
             name: 'Wood Screw',
             category: 'Fastener',
             material: 'Wood',
@@ -34,15 +37,17 @@ describe('Product Model', () => {
             finish: 'Polished',
             quantity: 50,
             price: 0.5,
+            inventory: 30,
         });
 
-        const product = await Product.findByPk(createdProduct.getDataValue('id'));
+        const product = await ProductModel.findByPk(createdProduct.getDataValue('id'));
         expect(product).not.toBeNull();
         expect(product?.getDataValue('name')).toBe('Wood Screw');
+        expect(product?.getDataValue('inventory')).toBe(30);
     });
 
     it('should update a product', async () => {
-        const product = await Product.create({
+        const product = await ProductModel.create({
             name: 'Bolt',
             category: 'Fastener',
             material: 'Alloy',
@@ -50,21 +55,23 @@ describe('Product Model', () => {
             finish: 'Zinc',
             quantity: 200,
             price: 1.0,
+            inventory: 30,
         });
 
         await product.update({
             quantity: 300,
             price: 1.25,
+            inventory: 60,
         });
 
-        // Query the database again to verify the changes
-        const updatedProduct = await Product.findByPk(product.getDataValue('id'));
+        const updatedProduct = await ProductModel.findByPk(product.getDataValue('id'));
         expect(updatedProduct?.getDataValue('quantity')).toBe(300);
         expect(updatedProduct?.getDataValue('price')).toBe(1.25);
+        expect(updatedProduct?.getDataValue('inventory')).toBe(60);
     });
 
     it('should soft delete a product', async () => {
-        const product = await Product.create({
+        const product = await ProductModel.create({
             name: 'Nail',
             category: 'Fastener',
             material: 'Steel',
@@ -77,17 +84,17 @@ describe('Product Model', () => {
         const productId = product.getDataValue('id');
         await product.destroy();
 
-        const deletedProduct = await Product.findByPk(productId, { paranoid: false });
+        const deletedProduct = await ProductModel.findByPk(productId, { paranoid: false });
         expect(deletedProduct).not.toBeNull();
         expect(deletedProduct?.getDataValue('deletedAt')).toBeDefined();
 
         // Verify that the product is not returned in a standard findAll query
-        const products = await Product.findAll();
+        const products = await ProductModel.findAll();
         expect(products.find(p => p.getDataValue('id') === productId)).toBeUndefined();
     });
 
     it('should find all products excluding soft deleted', async () => {
-        await Product.create({
+        await ProductModel.create({
             name: 'Anchor Bolt',
             category: 'Fastener',
             material: 'Stainless Steel',
@@ -97,7 +104,7 @@ describe('Product Model', () => {
             price: 1.5,
         });
 
-        await Product.create({
+        await ProductModel.create({
             name: 'Hex Nut',
             category: 'Fastener',
             material: 'Brass',
@@ -108,7 +115,7 @@ describe('Product Model', () => {
         });
 
         // Soft delete a product
-        const productToDelete = await Product.create({
+        const productToDelete = await ProductModel.create({
             name: 'Washer',
             category: 'Fastener',
             material: 'Steel',
@@ -120,17 +127,19 @@ describe('Product Model', () => {
         await productToDelete.destroy();
 
         // Find all products excluding soft deleted
-        const products = await Product.findAll();
+        const products = await ProductModel.findAll();
         expect(products.length).toBeGreaterThanOrEqual(2);
         expect(products.find(p => p.getDataValue('name') === 'Washer')).toBeFalsy();
     });
 
     it('should find all products including soft deleted when paranoid is false', async () => {
         // Find all products including soft deleted
-        const allProducts = await Product.findAll({ paranoid: false });
+        const allProducts = await ProductModel.findAll({ paranoid: false });
         expect(allProducts.length).toBeGreaterThanOrEqual(3);
         const softDeletedProduct = allProducts.find(p => p.getDataValue('name') === 'Washer');
         expect(softDeletedProduct).not.toBeNull();
         expect(softDeletedProduct?.getDataValue('deletedAt')).not.toBeNull();
     });
 });
+
+

@@ -1,10 +1,10 @@
-import Product from '@models/product';
+import ProductModel from '@models/productModel.ts';
 import sequelize from '@db/memory';
-import { getProducts } from '@controllers/productController';
+import { getProducts, getInventory } from '@controllers/productController';
 
 beforeAll(async () => {
     await sequelize.sync({ force: true });
-    await Product.bulkCreate([
+    await ProductModel.bulkCreate([
         {
             name: 'Hex Cap Screw',
             category: 'Fastener',
@@ -30,7 +30,7 @@ afterAll(async () => {
     await sequelize.close();
 });
 
-describe('Product Controller', () => {
+describe('ProductModel Controller', () => {
     it('should fetch products with no filters', async () => {
         const products = await getProducts({}, 1, 10);
         expect(products.length).toBeGreaterThan(0);
@@ -75,12 +75,50 @@ describe('Product Controller', () => {
     });
 
     it('should throw an error when there is an internal server error', async () => {
-        jest.spyOn(Product, 'findAll').mockImplementation(() => {
+        jest.spyOn(ProductModel, 'findAll').mockImplementation(() => {
             throw new Error('Database error');
         });
 
         await expect(getProducts({}, 1, 10)).rejects.toThrow('Database error');
 
-        (Product.findAll as jest.Mock).mockRestore();
+        (ProductModel.findAll as jest.Mock).mockRestore();
+    });
+});
+
+// Inventory Management Controller Tests
+describe('Inventory Management Controller', () => {
+    let productId: number;
+
+    beforeAll(async () => {
+        // Create a product to work with inventory
+        const product = await ProductModel.create({
+            name: 'Hex Cap Screw',
+            category: 'Fasteners',
+            price: 0.75,
+            inventory: 100,
+        });
+        productId = product.id;
+    });
+
+    describe('updateInventory', () => {
+        it('should update inventory level successfully', async () => {
+            const updatedProduct = await updateInventory(productId, 50);
+            expect(updatedProduct.inventory).toBe(150);
+        });
+
+        it('should throw an error when updating inventory with invalid data', async () => {
+            await expect(updateInventory(productId, -200)).rejects.toThrow('Invalid inventory update request');
+        });
+    });
+
+    describe('getInventory', () => {
+        it('should return the correct inventory level for a product', async () => {
+            const inventory = await getInventory(productId);
+            expect(inventory).toBe(150);
+        });
+
+        it('should throw an error if the product does not exist', async () => {
+            await expect(getInventory(9999)).rejects.toThrow('ProductModel not found');
+        });
     });
 });
