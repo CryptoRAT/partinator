@@ -34,10 +34,16 @@ ProductModel.init(
         quantity: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: 0,
         },
         price: {
             type: DataTypes.FLOAT,
             allowNull: false,
+        },
+        inventory: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
         },
         deletedAt: {
             type: DataTypes.DATE,
