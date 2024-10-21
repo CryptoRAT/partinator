@@ -9,12 +9,7 @@ Backend System for Fastener E-Commerce Catalog
 You will need to set up the following environment variables.
 
 ```bash
-export DB_HOST=localhost;
-export DB_PASSWORD=password;
-export DB_SCHEMA=gen2;
-export DB_USERNAME=gen2_app_user;
-export NODE_ENV=local;
-export DEBUG=true;
+None needed at this point
 ````
 
 ### Postgres
