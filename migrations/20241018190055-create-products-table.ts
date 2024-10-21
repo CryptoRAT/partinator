@@ -33,10 +33,16 @@ export default {
         quantity: {
           type: DataTypes.INTEGER,
           allowNull: false,
+          defaultValue: 0,
         },
         price: {
           type: DataTypes.FLOAT,
           allowNull: false,
+        },
+        inventory: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          defaultValue: 0,
         },
         createdAt: {
           type: DataTypes.DATE,
@@ -46,6 +52,10 @@ export default {
           type: DataTypes.DATE,
           allowNull: false,
         },
+        deletedAt: {
+          type: DataTypes.DATE,
+          allowNull: true,
+        }
       });
     } catch (error) {
       sequelizeLogger.error('Error creating products table:', error);

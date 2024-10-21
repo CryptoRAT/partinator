@@ -39,14 +39,14 @@ The project will follow Test-Driven Development (TDD) and a feature-by-feature a
 3. **Implement CSV Import API Endpoint**
     - Add a POST endpoint at `/api/import-csv` that accepts seller CSV files and stores standardized data.
 
-### Feature 2: Product Catalog Management
+### Feature 2: ProductModel Catalog Management
 - **Goal:** Manage product listings, including querying and filtering products.
 
 1. **Write Tests First**
     - Create tests for product model CRUD operations.
     - Create tests for the `/api/products` endpoint, including listing and filtering by attributes.
 
-2. **Implement Product Model**
+2. **Implement ProductModel Model**
     - Use Sequelize to define a model to store product information.
 
 3. **Implement Products API Endpoint**
@@ -59,7 +59,7 @@ The project will follow Test-Driven Development (TDD) and a feature-by-feature a
     - Write tests for inventory management, including stock updates and queries.
     - Handle edge cases like insufficient stock or invalid updates.
 
-2. **Expand Product Model**
+2. **Expand ProductModel Model**
     - Update the product model to track inventory levels.
 
 3. **Implement Inventory API Endpoints**
@@ -80,7 +80,7 @@ The project will follow Test-Driven Development (TDD) and a feature-by-feature a
     - Ensure concurrency control (e.g., optimistic locking) to manage inventory accurately during high-demand scenarios.
 
 ### Optional Bonus Features
-#### 1. Product Recommendation
+#### 1. ProductModel Recommendation
 - **Goal:** Suggest products based on user queries.
 
 1. **Write Tests First**
@@ -106,7 +106,7 @@ The project will follow Test-Driven Development (TDD) and a feature-by-feature a
 ## Summary
 - **Initial Setup:** Get a basic server up and running with tests for setup validation.
 - **CSV Import Feature:** Implement CSV parsing and ingestion via HTTP POST.
-- **Product Catalog Management:** Implement product listing and filtering capabilities.
+- **ProductModel Catalog Management:** Implement product listing and filtering capabilities.
 - **Inventory Management:** Expand the product model to manage stock and support stock update operations.
 - **Orders System:** Implement customer orders with concurrency control to ensure data integrity.
 - **Bonus Features:** Add product recommendation and a basic UI if time permits.

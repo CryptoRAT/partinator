@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../../app';
-import Product from '@models/product';
+import ProductModel from '@models/productModel.ts';
 import sequelize from '@db/memory';
 import { productsLogger } from '@loggers/loggers';
 
@@ -14,7 +14,7 @@ beforeAll(async () => {
     originalInfo = productsLogger.info;
     productsLogger.info = jest.fn();
     await sequelize.sync({ force: true }); // Ensure the database is properly synced
-    await Product.bulkCreate([
+    await ProductModel.bulkCreate([
         {
             name: 'Hex Cap Screw',
             category: 'Fastener',
@@ -47,7 +47,7 @@ afterAll(async () => {
 describe('GET /api/products', () => {
 
     it('should handle internal server errors gracefully', async () => {
-        jest.spyOn(Product, 'findAll').mockImplementation(() => {
+        jest.spyOn(ProductModel, 'findAll').mockImplementation(() => {
             throw new Error('Database error');
         });
 
@@ -59,7 +59,7 @@ describe('GET /api/products', () => {
             error: expect.any(Error)
         });
 
-        (Product.findAll as jest.Mock).mockRestore();
+        (ProductModel.findAll as jest.Mock).mockRestore();
     });
 
     it('should return a 400 error if page is not a positive integer', async () => {
@@ -177,5 +177,3 @@ describe('GET /api/products - Filter Application Tests', () => {
         expect(response.body[0].finish).toBe('Plain');
     });
 });
-
-
