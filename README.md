@@ -20,7 +20,7 @@ These are the main folders in this project, if it's obvious, the contents are no
 
 
 ### Environment Setup
-In order to run you will need to set NO DE_ENV in your environment. Currently, there are a couple environments this service knows about:
+In order to run you will need to set NODE_ENV in your environment. Currently, there are a couple environments this service knows about:
 * test (expects postgres to be running with the database config from above run)
 * development
   Each of these environments has a .env file in /config. You can change which one you are using with:
@@ -31,6 +31,15 @@ Or
 ```bash
 export NODE_ENV=test
 ```
+The following are the variables you can override, along with the default.
+```bash
+DATABASE_NAME || 'defaultdb';
+DATABASE_USER || 'gary';
+DATABASE_PASSWORD || 'indiana';
+process.env.DATABASE_HOST || 'localhost';
+process.env.DATABASE_DIALECT || 'sqlite';
+process.env.DATABASE_PORT || 5432;
+````
 You can create a new environment by adding a new .env file.
 
 ### Workspace setup
