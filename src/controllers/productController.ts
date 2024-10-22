@@ -1,10 +1,10 @@
-import ProductModel from '@models/productModel';
+import { Product } from '@models/index';
 
 export const getProducts = async (filters: any, page: number, pageSize: number) => {
     const offset = (page - 1) * pageSize;
     const limit = pageSize;
 
-    return await ProductModel.findAll({
+    return await Product.findAll({
         where: filters,
         offset,
         limit,
