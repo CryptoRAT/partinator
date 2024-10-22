@@ -1,4 +1,4 @@
-import sequelize, {getLogging} from '../memory';
+import sequelize, { getLogging } from '@db/sequelize';
 import { Sequelize } from 'sequelize';
 import {sequelizeLogger} from "@loggers/loggers";
 
