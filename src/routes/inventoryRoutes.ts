@@ -4,6 +4,126 @@ import { inventoryLogger as logger } from '@loggers/loggers';
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/inventory/{productId}:
+ *   put:
+ *     summary: Update inventory for a specific product
+ *     description: Updates the inventory value of a product identified by `productId`.
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the product to update inventory for
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               inventory:
+ *                 type: integer
+ *                 description: The new inventory value for the product
+ *     responses:
+ *       200:
+ *         description: Inventory updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 productId:
+ *                   type: integer
+ *                 inventory:
+ *                   type: integer
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *       400:
+ *         description: Invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid productId. It must be a number."
+ *       404:
+ *         description: Product not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Product not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unknown error updating inventory"
+ *
+ *   get:
+ *     summary: Get inventory for a specific product
+ *     description: Retrieves the current inventory value of a product identified by `productId`.
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the product to retrieve inventory for
+ *     responses:
+ *       200:
+ *         description: Inventory retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 inventory:
+ *                   type: integer
+ *       400:
+ *         description: Invalid productId
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid productId. It must be a number."
+ *       404:
+ *         description: Product not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Product not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unknown error retrieving inventory"
+ */
 router.put('/api/inventory/:productId', async (req, res) => {
     try {
         const productId = parseInt(req.params.productId, 10);

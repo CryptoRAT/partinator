@@ -29,22 +29,22 @@ const router = express.Router();
  *         name: category
  *         schema:
  *           type: string
- *         description: Filter by category
+ *         description: Filter by category (must be a non-numeric string)
  *       - in: query
  *         name: material
  *         schema:
  *           type: string
- *         description: Filter by material
+ *         description: Filter by material (must be a non-numeric string)
  *       - in: query
  *         name: threadSize
  *         schema:
  *           type: string
- *         description: Filter by thread size
+ *         description: Filter by thread size (must be a non-numeric string)
  *       - in: query
  *         name: finish
  *         schema:
  *           type: string
- *         description: Filter by finish
+ *         description: Filter by finish (must be a non-numeric string)
  *     responses:
  *       200:
  *         description: A list of products.
@@ -73,6 +73,19 @@ const router = express.Router();
  *                     type: number
  *       400:
  *         description: Invalid request parameters
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         description: Error message describing what went wrong
  *       500:
  *         description: Internal server error
  */
