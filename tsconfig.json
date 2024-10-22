@@ -27,7 +27,8 @@
       "@utils/*": ["src/utils/*"],
       "@models/*": ["src/models/*"],
       "@loggers/*": ["src/loggers/*"],
-      "@controllers/*": ["src/controllers/*"]
+      "@controllers/*": ["src/controllers/*"],
+      "@adminjs/design-system/styled-components": ["node_modules/styled-components"]
     }
   },
   "include": ["src/**/*", "config/**/*"],
