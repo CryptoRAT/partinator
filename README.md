@@ -4,17 +4,59 @@ Backend System for Fastener E-Commerce Catalog
 
 ## Setup Instructions
 
-### Environment Variables
 
-You will need to set up the following environment variables.
-
+### Environment Setup
+In order to run you will need to set NO DE_ENV in your environment. Currently, there are a couple environments this service knows about:
+* test (expects postgres to be running with the database config from above run)
+* development
+  Each of these environments has a .env file in /config. You can change which one you are using with:
 ```bash
-None needed at this point
-````
+export NODE_ENV=development
+```
+Or
+```bash
+export NODE_ENV=test
+```
+You can create a new environment by adding a new .env file. The app does have defaults to use if you don't set this, but they are not guaranteed.
+
+### Workspace setup
+If you are reading this file you have extracted the zip. In a terminal, go to the partinator folder and run the following:
+```bash
+yarn install
+```
+
+### Run Tests
+[Testing Documentation](src/__test__/testing.md)
+
+### Start the server
+
+To start the development server:
+```bash
+yarn run dev
+```
+To start the server as run in production:
+```bash
+yarn run start
+```
+
+There are many more target scripts in the package.json, please go look at them.
+### Pushing Changes
+Before pushing changes, run 
+```bash
+yarn run test:prepush
+```
+This will 
+- set the NODE_ENV=test
+- do a clean:full 
+- run all tests
+- run `yarn run start`
+
+At this point you can use postman to integration test the endpoints
 
 ### Postgres
 
-#### Install and Start MySQL
+Postgres is needed to run test:prepush, if you run in the development environment it will use sqlite.
+#### Install and Start PostgreSQL
 
 `brew install postgresql@15`
 
@@ -38,28 +80,12 @@ GRANT USAGE ON SCHEMA public TO partinator_test_service_user;
 GRANT CREATE ON SCHEMA public TO partinator_test_service_user;
 
 ```
-
-### Download and Install
-If you are reading this file you have extracted the zip. In a terminal, go to the partinator folder and run the following:
-```bash
-yarn install
-```
-
-### Migrate the Database
+#### Migrate the Database
 
 ```bash
-yarn migrate
+yarn run migrate
 ```
 
-### Start the server
-
-```bash
-yarn run dev
-```
-
-### Testing
-
-[Testing Documentation](src/__test__/testing.md)
 
 ## Deployment
 
