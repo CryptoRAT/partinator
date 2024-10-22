@@ -44,7 +44,6 @@ describe('Order Routes - Happy Path Tests', () => {
     });
 });
 
-
 describe('Order Routes - Branch Tests', () => {
     it('should return an error if the product does not exist', async () => {
         const response = await request(app)
@@ -69,6 +68,47 @@ describe('Order Routes - Branch Tests', () => {
         expect(response.status).toBe(400);
         expect(response.body.error).toBe('Not enough inventory available');
     });
+
+    it('should return an error if no products are provided', async () => {
+        const response = await request(app)
+            .post('/api/orders')
+            .send({
+                customerName: 'John Doe',
+                products: [],
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body.error).toBe('Quantity must be greater than zero');
+    });
+
+    it('should return an error if products is not provided', async () => {
+        const response = await request(app)
+            .post('/api/orders')
+            .send({
+                customerName: 'John Doe',
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body.error).toBe('Quantity must be greater than zero');
+    });
+
+    it('should return an internal server error if an unexpected error occurs', async () => {
+        jest.spyOn(Product, 'findByPk').mockImplementation(() => {
+            throw new Error('Unexpected error');
+        });
+
+        const response = await request(app)
+            .post('/api/orders')
+            .send({
+                customerName: 'Jane Doe',
+                products: [{ productId, quantity: 5 }],
+            });
+
+        expect(response.status).toBe(500);
+        expect(response.body.error).toBe('Internal server error');
+
+        jest.restoreAllMocks();
+    });
 });
 
 describe('Order Routes - Limit Tests', () => {
@@ -84,7 +124,18 @@ describe('Order Routes - Limit Tests', () => {
         expect(response.body.error).toBe('Quantity must be greater than zero');
     });
 
-    // TODO To get this test to pass we would need to either install an in-memory mutex (if single node) or a Redis distributed lock (if distributed environments)
+    it('should return an error when creating an order with negative quantity', async () => {
+        const response = await request(app)
+            .post('/api/orders')
+            .send({
+                customerName: 'John Doe',
+                products: [{ productId, quantity: -5 }],
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body.error).toBe('Quantity must be greater than zero');
+    });
+
     it.skip('should handle concurrent orders for the same product when there is not enough inventory', async () => {
         const orderPromise1 = request(app).post('/api/orders').send({
             customerName: 'Alice',
@@ -119,5 +170,4 @@ describe('Order Routes - Limit Tests', () => {
             expect(failedResponse.body.error).toBe('Not enough inventory available');
         }
     });
-
 });
