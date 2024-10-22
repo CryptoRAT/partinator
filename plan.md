@@ -10,6 +10,7 @@ The project will follow Test-Driven Development (TDD) and a feature-by-feature a
 - **Database Indexes:** While we could create indexes, I would prefer to talk to product about usage. Ideally, we will collect info on queries to tell us where our usage is so we don't have unneeded indexes. 
 - **Test Execution:** I am using --runInBand for tests. This is fine for smaller apps, but if it gets larger we should consider creating a separate db for each test (this can be done programmatically).
 - **Delete Endpoints:** I am not adding delete endpoints. I am thinking we want to keep historical data, but anonymize it and make sure it isn't displayed. I have used soft-delete so this is an option for the future, but I think anymore would be overkill at this time.
+- **Pull Requests:** Being as this was from scratch I often made changes that may have not related to the feature request. Like adding swagger. While typically I would create another branch and do it separately, for the first stages of a product with 1 engineer, I am not so picky.
 ## Development Approach
 - **Test-Driven Development (TDD):** Write tests before implementing functionality using Jest for unit tests.
 - **Feature Development:** Implement each feature fully before moving to the next, including the data and API layers.
