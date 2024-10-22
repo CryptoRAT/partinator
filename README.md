@@ -2,6 +2,20 @@
 
 Backend System for Fastener E-Commerce Catalog
 
+## Project Structure
+These are the main folders in this project, if it's obvious, the contents are not mentioned.
+- /docs/ - Has the original challenge, the plan I started with, and a markdown for testing.
+- /config/ - Has as many of the configs I could move out of the baseDir. In microservices, there clear line between responsibilities is needed.
+- /migrations/ - Has the migrations files.
+- /src/
+  - __test\__/ - You will see this in pretty much every folder. Contains tests related to the modules in the folder.
+  - controller/
+  - datasources/
+  - loggers/ - for now just one file declaring all the loggers, until it needs to be split out.
+  - models/
+  - routes/
+  - utils/
+  
 ## Setup Instructions
 
 
@@ -17,7 +31,7 @@ Or
 ```bash
 export NODE_ENV=test
 ```
-You can create a new environment by adding a new .env file. The app does have defaults to use if you don't set this, but they are not guaranteed.
+You can create a new environment by adding a new .env file.
 
 ### Workspace setup
 If you are reading this file you have extracted the zip. In a terminal, go to the partinator folder and run the following:
