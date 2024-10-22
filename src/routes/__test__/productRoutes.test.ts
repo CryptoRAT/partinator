@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../../app';
-import ProductModel from '@models/productModel.ts';
-import sequelize from '@db/memory';
+import { Product } from '@models/index';
+import sequelize from '@db/sequelize';
 import { productsLogger } from '@loggers/loggers';
 
 // Global logger mock setup
@@ -14,7 +14,7 @@ beforeAll(async () => {
     originalInfo = productsLogger.info;
     productsLogger.info = jest.fn();
     await sequelize.sync({ force: true }); // Ensure the database is properly synced
-    await ProductModel.bulkCreate([
+    await Product.bulkCreate([
         {
             name: 'Hex Cap Screw',
             category: 'Fastener',
@@ -47,7 +47,7 @@ afterAll(async () => {
 describe('GET /api/products', () => {
 
     it('should handle internal server errors gracefully', async () => {
-        jest.spyOn(ProductModel, 'findAll').mockImplementation(() => {
+        jest.spyOn(Product, 'findAll').mockImplementation(() => {
             throw new Error('Database error');
         });
 
@@ -59,7 +59,7 @@ describe('GET /api/products', () => {
             error: expect.any(Error)
         });
 
-        (ProductModel.findAll as jest.Mock).mockRestore();
+        (Product.findAll as jest.Mock).mockRestore();
     });
 
     it('should return a 400 error if page is not a positive integer', async () => {

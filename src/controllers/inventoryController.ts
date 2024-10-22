@@ -1,12 +1,13 @@
-import Product from '@models/productModel';
+import { Product } from '@models/index';
 import {inventoryLogger as logger } from "@loggers/loggers.ts";
 
+const MAX_DB_INTEGER_SIZE = 2147483647;
 export const updateInventory = async (productId: number, inventory: number): Promise<Product> => {
     if (inventory < 0) {
         throw new Error('Inventory cannot be negative');
     }
-    if(inventory > Number.MAX_SAFE_INTEGER){
-        throw new Error('Inventory value exceeds safe integer limits');
+    if(inventory > MAX_DB_INTEGER_SIZE){
+        throw new Error('Inventory value exceeds maximum allowed for an INTEGER in the db');
     }
     const product = await Product.findByPk(productId);
     if (!product) {

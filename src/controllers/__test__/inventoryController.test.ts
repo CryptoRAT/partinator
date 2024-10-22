@@ -1,12 +1,12 @@
-import ProductModel from '@models/productModel.ts';
-import sequelize from '@db/memory';
+import { Product } from '@models/index';
+import sequelize from '@db/sequelize';
 import { getInventory, updateInventory } from '@controllers/inventoryController';
 
 let productId: number; // Define productId at the top scope
 
 beforeAll(async () => {
     await sequelize.sync({ force: true });
-    const products = await ProductModel.bulkCreate([
+    const products = await Product.bulkCreate([
         {
             name: 'Hex Cap Screw',
             category: 'Fastener',
@@ -62,7 +62,7 @@ describe('Inventory Management Controller', () => {
 
         it('should throw an error if the product is not found after the update', async () => {
             // Mocking Product.findByPk to simulate product being deleted after update
-            jest.spyOn(ProductModel, 'findByPk')
+            jest.spyOn(Product, 'findByPk')
                 .mockResolvedValueOnce({ update: jest.fn() } as any) // First call returns a mock product
                 .mockResolvedValueOnce(null); // Second call simulates the product not being found after update
 
@@ -92,22 +92,22 @@ describe('Inventory Management Controller', () => {
             await expect(updateInventory(productId, -999999)).rejects.toThrow('Inventory cannot be negative');
         });
 
-        it('should handle maximum safe integer as inventory value', async () => {
-            const maxSafeInteger = Number.MAX_SAFE_INTEGER;
+        it('should handle maximum safe integer value in PostgreSQL as inventory value', async () => {
+            const maxSafeInteger = 2147483647;
             const updatedProduct = await updateInventory(productId, maxSafeInteger);
             expect(updatedProduct.getDataValue('inventory')).toBe(maxSafeInteger);
         });
         it('should throw an error when updating inventory to a value larger than MAX_SAFE_INTEGER', async () => {
             const largerThanMaxSafeInteger = Number.MAX_SAFE_INTEGER + 1;
             await expect(updateInventory(productId, largerThanMaxSafeInteger)).rejects.toThrow(
-                'Inventory value exceeds safe integer limits'
+                'Inventory value exceeds maximum allowed for an INTEGER in the db'
             );
         });
 
         it('should throw an error when updating inventory with an extremely large value', async () => {
             const extremelyLargeValue = 1e20;
             await expect(updateInventory(productId, extremelyLargeValue)).rejects.toThrow(
-                'Inventory value exceeds safe integer limits'
+                'Inventory value exceeds maximum allowed for an INTEGER in the db'
             );
         });
     });

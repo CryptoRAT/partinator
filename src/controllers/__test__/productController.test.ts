@@ -1,10 +1,10 @@
-import ProductModel from '@models/productModel.ts';
-import sequelize from '@db/memory';
+import { Product } from '@models/index';
+import sequelize from '@db/sequelize';
 import { getProducts } from '@controllers/productController';
 
 beforeAll(async () => {
     await sequelize.sync({ force: true });
-    await ProductModel.bulkCreate([
+    await Product.bulkCreate([
         {
             name: 'Hex Cap Screw',
             category: 'Fastener',
@@ -77,12 +77,12 @@ describe('Product Controller', () => {
     });
 
     it('should throw an error when there is an internal server error', async () => {
-        jest.spyOn(ProductModel, 'findAll').mockImplementation(() => {
+        jest.spyOn(Product, 'findAll').mockImplementation(() => {
             throw new Error('Database error');
         });
 
         await expect(getProducts({}, 1, 10)).rejects.toThrow('Database error');
 
-        (ProductModel.findAll as jest.Mock).mockRestore();
+        (Product.findAll as jest.Mock).mockRestore();
     });
 });

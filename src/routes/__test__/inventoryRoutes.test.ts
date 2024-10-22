@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../../app';
-import ProductModel from '@models/productModel.ts';
-import sequelize from '@db/memory';
+import { Product } from '@models/index';
+import sequelize from '@db/sequelize';
 import { inventoryLogger } from '@loggers/loggers';
 
 // Global logger mock setup
@@ -18,7 +18,7 @@ beforeAll(async () => {
     await sequelize.sync({ force: true });
 
     // Create products and assign productId for the tests
-    const products = await ProductModel.create({
+    const products = await Product.create({
         name: 'Hex Cap Screw',
         category: 'Fastener',
         material: 'Steel',
@@ -52,7 +52,7 @@ describe('Inventory Management Routes', () => {
 
                 expect(response.status).toBe(200);
                 expect(response.body.inventory).toBe(50);
-                const updatedProduct = await ProductModel.findByPk(productId);
+                const updatedProduct = await Product.findByPk(productId);
                 expect(updatedProduct?.getDataValue('inventory')).toBe(50);
             });
         });
@@ -146,7 +146,7 @@ describe('Inventory Management Routes', () => {
 
                 expect(response.status).toBe(200);
                 expect(response.body.inventory).toBe(0);
-                const updatedProduct = await ProductModel.findByPk(productId);
+                const updatedProduct = await Product.findByPk(productId);
                 expect(updatedProduct?.getDataValue('inventory')).toBe(0);
             });
 
@@ -158,7 +158,7 @@ describe('Inventory Management Routes', () => {
 
                 expect(response.status).toBe(200);
                 expect(response.body.inventory).toBe(largeValue);
-                const updatedProduct = await ProductModel.findByPk(productId);
+                const updatedProduct = await Product.findByPk(productId);
                 expect(updatedProduct?.getDataValue('inventory')).toBe(largeValue);
             });
         });

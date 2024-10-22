@@ -1,0 +1,1 @@
+export const ORDER_STATUSES = ['pending', 'completed', 'cancelled'] as const;
