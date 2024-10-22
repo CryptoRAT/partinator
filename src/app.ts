@@ -8,7 +8,9 @@ import { swaggerSpec } from '@config/swaggerConfig';
 const app = express();
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+app.get('/', (_, res) => {
+    res.redirect('/api-docs/');
+});
 // Load routes
 const routesPath = path.resolve(__dirname, 'routes');
 

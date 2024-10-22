@@ -5,6 +5,54 @@ import { parseCSV } from '@utils/csvParser';
 const router = express.Router();
 const upload = multer(); // TODO: research best middleware to handle file uploads
 
+/**
+ * @swagger
+ * /api/import-csv:
+ *   post:
+ *     summary: Import a CSV file
+ *     description: Parses the uploaded CSV file and returns the parsed data.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: The CSV file to be uploaded
+ *     responses:
+ *       200:
+ *         description: File parsed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: File parsed successfully
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     description: Parsed data from the CSV file
+ *       400:
+ *         description: No file uploaded
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: No file uploaded
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: An error occurred while processing the file
+ */
 router.post('/api/import-csv', upload.single('file'), (req: Request, res: Response) => {
     try {
         if (!req.file) {
