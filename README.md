@@ -23,9 +23,19 @@ None needed at this point
 #### Create the Users and Schemas
 
 ```sql
-CREATE SCHEMA partinator;
-CREATE USER 'partinator_app_user'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON partinator.* TO 'partinator_app_user'@'localhost';
+-- Start out in the postgres db
+\c postgres
+-- Create the database
+CREATE DATABASE partinator_test;
+-- Create the user
+CREATE USER partinator_test_service_user WITH PASSWORD 'look it up';
+-- Grant privileges to the user
+GRANT ALL PRIVILEGES ON DATABASE partinator_test TO partinator_test_service_user;
+-- switch connection to the new db
+\c partinator_test;
+-- Grant privileges on the public schema
+GRANT USAGE ON SCHEMA public TO partinator_test_service_user;
+GRANT CREATE ON SCHEMA public TO partinator_test_service_user;
 
 ```
 
