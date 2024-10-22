@@ -1,4 +1,4 @@
-import {Sequelize} from 'sequelize';
+import { Sequelize } from 'sequelize';
 import {config as dotenvConfig} from 'dotenv';
 import path from 'path';
 import {sequelizeLogger} from '@loggers/loggers';
@@ -20,18 +20,17 @@ export const getLogging = (): boolean | ((msg: string) => void) => {
 
 const createSequelizeInstance = (): Sequelize => {
     const database = process.env.DATABASE_NAME || 'defaultdb';
-    const username = process.env.DATABASE_USER || 'postgres';
-    const password = process.env.DATABASE_PASSWORD || '';
+    const username = process.env.DATABASE_USER || 'gary';
+    const password = process.env.DATABASE_PASSWORD || 'indiana';
     const host = process.env.DATABASE_HOST || 'localhost';
-    const dialect = (process.env.DATABASE_DIALECT || '') as any;
+    const dialect = (process.env.DATABASE_DIALECT || 'sqlite') as 'mysql' | 'postgres' | 'sqlite' | 'mssql';
     let storage = ''
     if (dialect === 'sqlite') {
         storage = ':memory';
     }
     const port = process.env.DATABASE_PORT ? parseInt(process.env.DATABASE_PORT, 10) : 5432;
     const logging = getLogging();
-
-    return new Sequelize(
+    const sequelize = new Sequelize(
         database,
         username,
         password,
@@ -43,6 +42,10 @@ const createSequelizeInstance = (): Sequelize => {
             logging,
         }
     );
+    if(!sequelize) {
+        throw new Error('Sequelize instance not created');
+    }
+    return sequelize;
 };
 
 
