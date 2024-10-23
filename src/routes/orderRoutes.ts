@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createOrder } from '@controllers/orderController';
+import { createOrder, getOrders } from '@controllers/orderController';
 
 interface ProductInput {
     productId: number;
@@ -99,7 +99,7 @@ const router = Router();
  *                   type: string
  *                   example: "Internal server error"
  */
-router.post('/api/orders', async (req, res) => {
+router.post('/orders', async (req, res) => {
     const { customerName, products }: { customerName: string; products: ProductInput[] } = req.body;
 
     // Check if products array is valid and contains at least one product with quantity > 0
@@ -127,5 +127,46 @@ router.post('/api/orders', async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/orders:
+ *   get:
+ *     summary: Get all orders
+ *     description: Returns a list of all orders.
+ *     responses:
+ *       200:
+ *         description: A list of orders.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   customerName:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *                   products:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         productId:
+ *                           type: integer
+ *                         quantity:
+ *                           type: integer
+ */
+router.get('/orders', async (_, res) => {
+    try {
+        const orders = await getOrders();
+        res.set('Content-Range', `orders 0-${orders.length}/${orders.length}`);
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ error: error });
+    }
+});
 
 export default router;

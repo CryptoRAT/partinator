@@ -100,4 +100,14 @@ export const addProductsToOrder = async (orderId: number, products: OrderProduct
     }
 };
 
-
+export const getOrders = async () => {
+    try {
+        const orders = await Order.findAll({
+            include: [{ model: Product }],
+        });
+        return orders.map(order => order.get({ plain: true }));
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        throw new Error('Error fetching orders');
+    }
+};

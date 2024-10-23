@@ -90,7 +90,7 @@ const router = express.Router();
  *         description: Internal server error
  */
 router.get(
-    '/api/products',
+    '/products',
     [
         query('page').optional().isInt({ min: 1 }).withMessage('Page must be a positive integer'),
         query('pageSize').optional().isInt({ min: 1 }).withMessage('Page size must be a positive integer'),
@@ -117,6 +117,7 @@ router.get(
             const products = await getProducts(filters, Number(page), Number(pageSize));
 
             productsLogger.info('Products fetched successfully', { filters, page, pageSize });
+            res.setHeader('Content-Range', `products 0-9/${products.length}`);
             res.status(200).json(products);
         } catch (error) {
             productsLogger.error('Error fetching products:', { error });

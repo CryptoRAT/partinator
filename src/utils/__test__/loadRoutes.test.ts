@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import loadRoutes from '../loadRoutes';
+import loadRoutes from '@utils/loadRoutes';
 
 jest.mock('fs');
 

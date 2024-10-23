@@ -1,4 +1,5 @@
 import { parse } from 'csv-parse/sync';
+import { importCsvLogger as logger } from "@loggers/loggers";
 
 type StandardizedProduct = {
     category: string;
@@ -45,6 +46,7 @@ export function parseCSV(csvContent: string): StandardizedProduct[] {
     const parseFunction = parseFunctions[headers];
 
     if (!parseFunction) {
+        logger.error(`No parse function found for headers ${headers}`);
         throw new Error(`No parse function found for headers: ${headers}`);
     }
 
