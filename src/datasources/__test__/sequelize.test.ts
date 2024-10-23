@@ -140,7 +140,6 @@ describe('Sequelize Datasource - Branch Tests', () => {
         delete process.env.DATABASE_HOST;
 
         const sequelizeWithoutHost = createSequelizeInstance();
-        console.log(sequelizeWithoutHost.config.host)
         expect(sequelizeWithoutHost.config.host).toBe('localhost');
 
         process.env.DATABASE_HOST = originalDatabaseHost;
