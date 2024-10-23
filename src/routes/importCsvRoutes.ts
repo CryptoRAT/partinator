@@ -1,13 +1,14 @@
 import express, { Request, Response } from 'express';
 import multer from 'multer';
 import { parseCSV } from '@utils/csvParser';
+import { importCsvLogger as logger } from "@loggers/loggers";
 
 const router = express.Router();
 const upload = multer(); // TODO: research best middleware to handle file uploads
 
 /**
  * @swagger
- * /api/import-csv:
+ * /api/importcsv:
  *   post:
  *     summary: Import a CSV file
  *     description: Parses the uploaded CSV file and returns the parsed data.
@@ -53,10 +54,10 @@ const upload = multer(); // TODO: research best middleware to handle file upload
  *               type: string
  *               example: An error occurred while processing the file
  */
-router.post('/api/import-csv', upload.single('file'), (req: Request, res: Response) => {
+router.post('/importcsv', upload.single('file'), (req: Request, res: Response) => {
     try {
         if (!req.file) {
-            console.warn('No file uploaded to api/import-csv');
+            logger.warn('No file uploaded to /importcsv');
             return res.status(400).send('No file uploaded');
         }
 
@@ -65,7 +66,7 @@ router.post('/api/import-csv', upload.single('file'), (req: Request, res: Respon
 
         res.status(200).json({ message: 'File parsed successfully', data: parsedData });
     } catch (error) {
-        console.error('Error parsing CSV:', error);
+        logger.error('Error parsing CSV:', error);
         res.status(500).send('An error occurred while processing the file');
     }
 });

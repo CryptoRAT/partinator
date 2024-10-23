@@ -10,12 +10,11 @@ const loadRoutes = async (basePath: string): Promise<express.Router> => {
 
     // Import routes from each file
     for (const file of files) {
-        // Exclude files with '__test__' in their names
         if (!file.includes('__test__')) {
             const filePath = path.join(basePath, file);
             try {
                 const route = await import(filePath);
-                // Check if the default export is a valid middleware function
+
                 if (route.default && typeof route.default === 'function') {
                     router.use(route.default);
                 } else {
@@ -29,5 +28,6 @@ const loadRoutes = async (basePath: string): Promise<express.Router> => {
 
     return router;
 };
+
 
 export default loadRoutes;

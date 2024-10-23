@@ -36,3 +36,15 @@ export const getInventory = async (productId: number) => {
 
     return product.getDataValue('inventory');
 };
+
+export const getInventories = async () => {
+    try {
+        const products = await Product.findAll({
+            attributes: ['id', 'name', 'inventory'],
+        });
+        return products.map(product => product.get({ plain: true }));
+    } catch (error) {
+        logger.error('Error fetching inventories:', error);
+        throw new Error('Error fetching inventories');
+    }
+};

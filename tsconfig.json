@@ -3,7 +3,10 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": ["esnext"],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es6",
@@ -19,6 +22,7 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
       "@config/*": ["config/*"],

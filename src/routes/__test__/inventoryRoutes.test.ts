@@ -44,10 +44,10 @@ afterAll(async () => {
 describe('Inventory Management Routes', () => {
     // Happy Path Tests
     describe('Happy Path Tests', () => {
-        describe('PUT /inventory/:productId', () => {
+        describe('PUT /inventories/:productId', () => {
             it('should update inventory level successfully', async () => {
                 const response = await request(app)
-                    .put(`/api/inventory/${productId}`)
+                    .put(`/api/inventories/${productId}`)
                     .send({ inventory: 50 });
 
                 expect(response.status).toBe(200);
@@ -57,9 +57,9 @@ describe('Inventory Management Routes', () => {
             });
         });
 
-        describe('GET /inventory/:productId', () => {
+        describe('GET /inventories/:productId', () => {
             it('should return the correct inventory level for a product', async () => {
-                const response = await request(app).get(`/api/inventory/${productId}`);
+                const response = await request(app).get(`/api/inventories/${productId}`);
 
                 expect(response.status).toBe(200);
                 expect(response.body.inventory).toBe(50); // The inventory was updated to 50 in the previous test
@@ -69,10 +69,10 @@ describe('Inventory Management Routes', () => {
 
     // Branch Tests
     describe('Branch Tests', () => {
-        describe('PUT /inventory/:productId', () => {
+        describe('PUT /inventories/:productId', () => {
             it('should return an error when productId is invalid', async () => {
                 const response = await request(app)
-                    .put('/api/inventory/invalidProductId')
+                    .put('/api/inventories/invalidProductId')
                     .send({ inventory: 50 });
 
                 expect(response.status).toBe(400);
@@ -82,7 +82,7 @@ describe('Inventory Management Routes', () => {
             it('should return an error if the product does not exist', async () => {
                 const nonExistentProductId = 9999;
                 const response = await request(app)
-                    .put(`/api/inventory/${nonExistentProductId}`)
+                    .put(`/api/inventories/${nonExistentProductId}`)
                     .send({ inventory: 50 });
 
                 expect(response.status).toBe(404);
@@ -90,16 +90,16 @@ describe('Inventory Management Routes', () => {
             });
         });
 
-        describe('GET /inventory/:productId', () => {
+        describe('GET /inventories/:productId', () => {
             it('should return an error if the product does not exist', async () => {
-                const response = await request(app).get('/api/inventory/9999'); // Non-existent productId
+                const response = await request(app).get('/api/inventories/9999'); // Non-existent productId
 
                 expect(response.status).toBe(404);
                 expect(response.body.error).toBe('Product not found');
             });
 
             it('should return an error when productId is invalid', async () => {
-                const response = await request(app).get('/api/inventory/invalidProductId'); // Invalid productId
+                const response = await request(app).get('/api/inventories/invalidProductId'); // Invalid productId
 
                 expect(response.status).toBe(400);
                 expect(response.body.error).toBe('Invalid productId. It must be a number.');
@@ -109,10 +109,10 @@ describe('Inventory Management Routes', () => {
 
     // Limit Tests
     describe('Limit Tests', () => {
-        describe('PUT /inventory/:productId', () => {
+        describe('PUT /inventories/:productId', () => {
             it('should return an error when updating inventory with negative value', async () => {
                 const response = await request(app)
-                    .put(`/api/inventory/${productId}`)
+                    .put(`/api/inventories/${productId}`)
                     .send({ inventory: -200 });
 
                 expect(response.status).toBe(400);
@@ -122,7 +122,7 @@ describe('Inventory Management Routes', () => {
             it('should return an error when updating inventory to a value larger than MAX_SAFE_INTEGER', async () => {
                 const largerThanMaxSafeInteger = Number.MAX_SAFE_INTEGER + 1;
                 const response = await request(app)
-                    .put(`/api/inventory/${productId}`)
+                    .put(`/api/inventories/${productId}`)
                     .send({ inventory: largerThanMaxSafeInteger });
 
                 expect(response.status).toBe(400);
@@ -132,7 +132,7 @@ describe('Inventory Management Routes', () => {
             it('should return an error when updating inventory with an extremely large value', async () => {
                 const extremelyLargeValue = 1e20;
                 const response = await request(app)
-                    .put(`/api/inventory/${productId}`)
+                    .put(`/api/inventories/${productId}`)
                     .send({ inventory: extremelyLargeValue });
 
                 expect(response.status).toBe(400);
@@ -141,7 +141,7 @@ describe('Inventory Management Routes', () => {
 
             it('should set inventory level to zero successfully', async () => {
                 const response = await request(app)
-                    .put(`/api/inventory/${productId}`)
+                    .put(`/api/inventories/${productId}`)
                     .send({ inventory: 0 });
 
                 expect(response.status).toBe(200);
@@ -153,7 +153,7 @@ describe('Inventory Management Routes', () => {
             it('should update inventory to a large positive value successfully', async () => {
                 const largeValue = 100000;
                 const response = await request(app)
-                    .put(`/api/inventory/${productId}`)
+                    .put(`/api/inventories/${productId}`)
                     .send({ inventory: largeValue });
 
                 expect(response.status).toBe(200);
